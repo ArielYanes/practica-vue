@@ -1,5 +1,7 @@
-module.exports = {
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/ejemplo/'   // usa el nombre exacto de tu repo
-    : '/'
-}
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  base: '/practica-vue/'   // 👈 aquí va el nombre del repo
+})
