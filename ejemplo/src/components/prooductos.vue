@@ -1,56 +1,55 @@
-<script setup>
-import { ref } from 'vue'
-
-const productos = ref([
-  { nombre: "Laptop", precio: 800, cantidad: 5 },
-  { nombre: "Mouse", precio: 20, cantidad: 10 },
-  { nombre: "Teclado", precio: 35, cantidad: 7 }
-])
-
-function aumentarCantidad(producto){
-  producto.cantidad++
-}
-</script>
-
 <template>
   <div>
-    <h2>Lista de Productos</h2>
+    <h2>Registro de Vehículos</h2>
 
-    <table border="1">
-      <tr>
-        <th>Producto</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-        <th>Acción</th>
-      </tr>
+    <form @submit.prevent="agregarVehiculo">
+      <input v-model="cliente" placeholder="Cliente" />
+      <input v-model="placa" placeholder="Placa" />
 
-      <tr v-for="p in productos" :key="p.nombre">
-        <td>{{ p.nombre }}</td>
-        <td>{{ p.precio }}</td>
-        <td>{{ p.cantidad }}</td>
-        <td>
-          <button @click="aumentarCantidad(p)">
-            Agregar
-          </button>
-        </td>
-      </tr>
+      <button>Agregar</button>
+    </form>
 
-    </table>
+    <p v-if="mensaje">{{ mensaje }}</p>
+
+    <ul>
+      <li v-for="(v, i) in vehiculos" :key="i">
+        {{ v.cliente }} - {{ v.placa }}
+        <button @click="eliminarVehiculo(i)">X</button>
+      </li>
+    </ul>
   </div>
 </template>
 
-<style>
-table{
-  margin-top:20px;
-  border-collapse: collapse;
-}
+<script>
+export default {
+  data() {
+    return {
+      cliente: '',
+      placa: '',
+      vehiculos: [],
+      mensaje: ''
+    };
+  },
+  methods: {
+    agregarVehiculo() {
+      if (!this.cliente || !this.placa) {
+        this.mensaje = "Campos obligatorios";
+        return;
+      }
 
-th, td{
-  padding:8px;
-  text-align:center;
-}
+      this.vehiculos.push({
+        cliente: this.cliente,
+        placa: this.placa
+      });
 
-button{
-  padding:5px 10px;
-}
-</style>
+      this.mensaje = "Agregado correctamente";
+      this.cliente = '';
+      this.placa = '';
+    },
+
+    eliminarVehiculo(i) {
+      this.vehiculos.splice(i, 1);
+    }
+  }
+};
+</script>
